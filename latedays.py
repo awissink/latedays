@@ -4,22 +4,21 @@ import numpy as np
 from datetime import datetime, timedelta
 import pytz
 
-# CONFIGURATIONS: EVERY TIME
-DEADLINE_ET_STRING = '2023-02-20-23:59:59' #assignment deadline ET | format: year-month-date-hour:minute:second
+# TODO: Change deadline string and filenames of CSVs
+DEADLINE_ET_STRING = '2023-02-20-23:59:59' # Assignment deadline in ET (Format: year-month-date-hour:minute:second)
 
-CW_CSV_FILENAME = 'courseworks.csv'   # Current: HW1&2
-GS_CSV_FILENAME = 'gradescope.csv'    # Current: HW1&2
-CODIO_CSV_FILENAME = 'codio.csv'      # Current: HW1&2
-OUTPUT_CSV_FILENAME = 'hw1&2_final_late_days.csv'  # Name of bookkeeping csv file
-COURSEWORKS_IMPORT_FILENAME = 'courseworks_import.csv' # Name of Courseworks import csv file
+CW_CSV_FILENAME = 'courseworks.csv'
+GS_CSV_FILENAME = 'gradescope.csv'
+CODIO_CSV_FILENAME = 'codio.csv'
+OUTPUT_CSV_FILENAME = 'hw1&2_final_late_days.csv' # Bookkeeping CSV file
+COURSEWORKS_IMPORT_FILENAME = 'courseworks_import.csv' # Courseworks import CSV file
 
 WRIT_OVERRIDES_DICT = {} # Add key=uni & value=waived late hours
 PROG_OVERRIDES_DICT = {} # Add key=uni & value=waived late hours
 
-# CONFIGURATIONS: BEGINNING OF SEMESTER
 GRACE_PERIOD_HOURS = 1  # Number of late hours we give away for free
 
-# Check if column names in CSVs changed
+# TODO: Confirm that column names in CSVs have not changed
 CW_UNI = 'SIS User ID' # Column name: column of student unis
 CW_NAMES = 'Student' # Column name: column of student names
 CW_LATE_DAYS = 'Late Days Remaining (1021574)'
@@ -38,7 +37,7 @@ CODIO_SUBMIT_TIMEZONE = pytz.timezone('UTC') # Timezone of codio submission time
 DEADLINE_TIMEZONE = pytz.timezone('US/Eastern') # Timezone of DEADLINE_ET_STRING
 DEADLINE_ET_wGPH = DEADLINE_TIMEZONE.localize( datetime.strptime(DEADLINE_ET_STRING, "%Y-%m-%d-%H:%M:%S") + timedelta(hours=GRACE_PERIOD_HOURS) ) # Extract datetime from string -> add grace period hours -> convert to ET
 
-# Input cw & gs & codio & overrides csv -> load to dataframes
+# Load CSVs to dataframes
 def inputs(cw_csv_nameString, gs_csv_nameString, codio_csv_nameString):
     main_df_columns = [CW_UNI, CW_NAMES, CW_LATE_DAYS] # Columns needed from courseworks csv
     main_df = pd.read_csv(cw_csv_nameString, usecols=main_df_columns)[main_df_columns] # Parse csv columns to df (usecols=only grab the rows we want, set column order for naming)//set column order: https://stackoverflow.com/questions/40024406/keeping-columns-in-the-specified-order-when-using-usecols-in-pandas-read-csv
@@ -126,4 +125,5 @@ def main():
     generate_courseworks_csv(main_df)
     get_exceed_3_days(main_df)
 
-main()
+if __name__ == "__main__":
+    main()
