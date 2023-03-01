@@ -5,15 +5,6 @@ from datetime import datetime, timedelta
 import pytz
 
 # CONFIGURATIONS: EVERY TIME
-'''download datasheets
-1) download datasheets 
-    courseworks (Grades -> Action -> Export)
-    gradescope (Dashboard -> <Assignment> -> Review Grades -> Download Grades -> Download CSV)
-    codio (Courses -> 3 dots beside <Assignment> -> Download CSV)
-2) move the csv files to directory containing latedays.py
-3) enter the filenames to the respective variables below:
-'''
-
 DEADLINE_ET_STRING = '2023-02-20-23:59:59' #assignment deadline ET | format: year-month-date-hour:minute:second
 
 CW_CSV_FILENAME = 'courseworks.csv'   # Current: HW1&2
@@ -41,13 +32,6 @@ CODIO_FIRSTNAME = 'first name'  # Column name: usually contains mostly unis
 CODIO_EMAIL = 'email'
 CODIO_SUBMIT_TIME = 'completed date' # Column name: submission date & time (in UTC)
 CODIO_SUBMIT_STATUS = 'completed' # Column name: TRUE or FALSE
-
-'''
-POTENTIAL IMPROVEMENTS
-prog_lateness: days:hour:minute:second -> hour:minute:second only
-prog_lateness takes grace period hours into account, writ_lateness doesn't (final late days accounts for grace hours)
-add .values to vectorised parameters (https://engineering.upside.com/a-beginners-guide-to-optimizing-pandas-code-for-speed-c09ef2c6a4d6)
-'''
 
 DIVIDER_STRING = '======================================================================================================================='
 CODIO_SUBMIT_TIMEZONE = pytz.timezone('UTC') # Timezone of codio submission timestamp
