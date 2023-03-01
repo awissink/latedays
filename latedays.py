@@ -79,12 +79,12 @@ def writ_latedays(main_df, gs_df):
 # PROGRAMMING LATE DAYS
 def prog_latedays(main_df, codio_df):
     # Calculate late days
-    codio_df['prog_submit_time'] = pd.to_datetime(codio_df['prog_submit_time'], errors='coerce').apply(lambda x: x.tz_localize(CODIO_SUBMIT_TIMEZONE).tz_convert('US/Eastern'))  # Convert submit time to datetime -> convert from UTC to ET timezone
+    codio_df['prog_submit_time'] = pd.to_datetime(codio_df['prog_submit_time'], errors='coerce').apply(lambda x: x.tz_localize(CODIO_SUBMIT_TIMEZONE).tz_convert(DEADLINE_TIMEZONE))  # Convert submit time to datetime -> convert from UTC to ET timezone
     codio_df['prog_lateness'] = pd.to_timedelta(codio_df['prog_submit_time'] - DEADLINE_ET_wGPH) # Find lateness
     codio_df['prog_lateness'].loc[ codio_df['prog_lateness'] <= timedelta(seconds=0) ] = str(timedelta(days=0, hours=0, minutes=0, seconds=0)) # Set timely submissions late hours to 0   //https://stackoverflow.com/questions/2591845/comparing-a-time-delta-in-python    //https://docs.python.org/3/library/datetime.html
     codio_df['prog_late_days'] = codio_df['prog_lateness'] / pd.Timedelta('1 hour') # Convert to int & round to hours
-    codio_df['prog_late_days'] = codio_df['prog_late_days'].apply(np.ceil) # Round down
-    codio_df['prog_late_days'] = codio_df['prog_late_days']//24 # Convert to late days
+    codio_df['prog_late_days'] = codio_df['prog_late_days']/24 # Convert to late days
+    codio_df['prog_late_days'] = codio_df['prog_late_days'].apply(np.ceil) # Round up
 
     # Extract uni (to map to main_df)
     codio_df['uni'] = codio_df.apply(lambda row: row['?uni?'].lower() if row['?uni?'] in main_df.index else row['email'].split('@')[0] if row['email'].split('@')[0] in main_df.index else np.NaN, axis=1)  #extract uni from either first_name or email & check if uni is in main_df AKA if the student is enrolled)
