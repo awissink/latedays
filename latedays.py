@@ -67,7 +67,8 @@ def writ_latedays(main_df, gs_df):
     gs_df['writ_late_days'] = gs_df['writ_late_days'].apply(np.floor)  # Round down
     gs_df['writ_late_days'].loc[ (0 < gs_df['writ_late_days']) & (gs_df['writ_late_days'] < GRACE_PERIOD_HOURS) ] = 0  # Apply grace period hours (case: latehours bn 0 and grace hours -> to avoid -ve arithmetic results below)
     gs_df['writ_late_days'].loc[ GRACE_PERIOD_HOURS <= gs_df['writ_late_days'] ] = (gs_df['writ_late_days'] - GRACE_PERIOD_HOURS) # Apply grace period hours (case: latehours > grace hours)
-    gs_df['writ_late_days'] = gs_df['writ_late_days']//24 # Convert to late days
+    gs_df['writ_late_days'] = gs_df['writ_late_days']/24 # Convert to late days
+    gs_df['writ_late_days'] = gs_df['writ_late_days'].apply(np.ceil) # Round up
     
     # Pass Gradescope info to main_df
     gs_df = gs_df[gs_df['uni'].isin(main_df.index)] # Drop unenrolled students from gs_df (to avoid unenrolled students added to main_df as new rows)    //https://stackoverflow.com/questions/27965295/dropping-rows-from-dataframe-based-on-a-not-in-condition
